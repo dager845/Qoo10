@@ -5,7 +5,32 @@ const cheerio = require('cheerio');
 const browser = await puppeteer.launch();
 const page = await browser.newPage();
 await page.goto('https://www.qoo10.sg/gmkt.inc/Bestsellers/?g=2', {waitUntil: 'networkidle2'});
-await page.setViewport({width: 1280, height: 1024});
+
+// Get the height of the rendered page
+const bodyHandle = await page.$('body');
+const { height } = await bodyHandle.boundingBox();
+await bodyHandle.dispose();
+/*
+// Scroll one viewport at a time, pausing to let content load
+const viewportHeight = page.viewport().height;
+let viewportIncr = 0;
+while (viewportIncr + viewportHeight < height) {
+  await page.evaluate(_viewportHeight => {
+    window.scrollBy(0, _viewportHeight);
+  }, viewportHeight);
+  //await page.waitFor(100);
+  viewportIncr = viewportIncr + viewportHeight;
+}
+
+await page.focus('#content > div > div.bst_ct > div:nth-child(6) > h3');
+await page.waitFor(1000);
+
+// Scroll back to top
+await page.evaluate(_ => {
+  window.scrollTo(0, 0);
+});
+*/
+//await page.setViewport({width: 1280, height: 1024});
 const elements1 = await page.evaluate(() => {
   let elements = (document.querySelector("#content > div > div.bst_ct > div:nth-child(2) > div > ol")).innerHTML;
   return elements;
