@@ -18,6 +18,7 @@
   "homepage": "https://github.com/dager845/Qoo10#readme",
   "dependencies": {
     "cheerio": "^1.0.0-rc.3",
+    "exceljs": "^1.11.0",
     "puppeteer": "^1.17.0"
   }
 }
